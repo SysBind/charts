@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pgouser-admin
+  labels:
+    app: {{ template "postgres-operator.name" . }}
+    chart: {{ template "postgres-operator.chart" . }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+    pgo-created-by: bootstrap
+    pgo-pgouser: "true"
+    username: {{ "admin" | quote }}
+    vendor: crunchydata    
+type: Opaque
+data:
+  username:  {{ "admin"  | b64enc | quote }}
+  password:  {{ include "pgoadmin.password" . | b64enc | quote }}
+  roles:  {{ "pgoadmin"  | b64enc | quote }}
