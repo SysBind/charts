@@ -1,0 +1,38 @@
+## Timescale TimescaleDB image version
+## ref: https://hub.docker.com/r/timescale/timescaledb
+##
+image:
+  repository: timescale/timescaledb
+  tag: timescale/timescaledb:1.7.1-pg12
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+
+postgresqlUsername: postgres
+
+## PostgreSQL password
+# postgresqlPassword:
+
+## String to partially override timescaledb.fullname template (will maintain the release name)
+##
+# nameOverride:
+
+## String to fully override timescaledb.fullname template
+##
+# fullnameOverride:
+
+nodeSelector: {}
+affinity: {}
+tolerations: []
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 1024Mi
+    cpu: 1000m
+

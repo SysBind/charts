@@ -1,0 +1,4 @@
+To get the password for {{ .Values.postgresqlUsername | quote }}  run:
+
+    kubectl get secret --namespace {{ .Release.Namespace }} {{ template "timescaledb.fullname" . }} -o jsonpath="{.data.postgresql-password}" | base64 --decode
+

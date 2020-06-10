@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-timescaledb
+  labels:
+    app.kubernetes.io/name:  {{ .Release.Name }}-timescaledb
+    helm.sh/chart: {{ include "timescaledb.chart" . }}
+    release: {{ .Release.Name | quote }}
+spec:
+  replicas: 1 # do not scale!
+  selector:
+    matchLabels:
+      app.kubernetes.io/name:  {{ .Release.Name }}-timescaledb
+      release: {{ .Release.Name | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name:  {{ .Release.Name }}-timescaledb
+        release: {{ .Release.Name | quote }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}      
+      containers:
+        - name: timescaledb
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          env:
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresqlUsername | quote }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "timescaledb.fullname" . }}
+                key: postgresql-password
