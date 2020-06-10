@@ -1,38 +1,45 @@
-## Zabbix image version
-## ref: https://hub.docker.com/u/zabbix/
-## (currently only postgresql based images supported)
-##
+
+postgresqlHost: postgresql
+postgresqlUsername: zabbix
+postgresqlPassword: zabbix
 
 zabbix:
   image:
     repository: zabbix/zabbix-server-pgsql
     tag: alpine-5.0.1
     pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 1024Mi
+      cpu: 1000m
 
+    
 zabbixWeb:
   image:
     repository: zabbix/zabbix-web-apache-pgsql
     tag: alpine-5.0.1
     pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 1024Mi
+      cpu: 1000m
+
     
-
-postgresqlHost: postgresql
-postgresqlUsername: zabbix
-postgresqlPassword: zabbix
-
-zabbixResources:
-  requests:
-    memory: 256Mi
-    cpu: 250m
-  limits:
-    memory: 1024Mi
-    cpu: 1000m
-
-zabbixWebResources:
-  requests:
-    memory: 256Mi
-    cpu: 250m
-  limits:
-    memory: 1024Mi
-    cpu: 1000m
-    
+zabbixAgent:
+  image:
+    repository: zabbix/zabbix-agent2
+    tag: alpine-5.0.1
+    pullPolicy: IfNotPresent
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 250m
+      limits:
+        memory: 1024Mi
+        cpu: 1000m

@@ -35,7 +35,7 @@ spec:
           image: {{ .Values.zabbix.image.repository }}:{{ .Values.zabbix.image.tag }}
           imagePullPolicy: {{ .Values.zabbix.image.pullPolicy }}
           resources:
-            {{- toYaml .Values.zabbixResources | nindent 12 }}
+            {{- toYaml .Values.zabbix.resources | nindent 12 }}
           ports:
             - name: postgres
               containerPort: 10051
@@ -47,3 +47,13 @@ spec:
             value: {{ .Values.postgresqlUsername | quote }}
           - name: POSTGRES_PASSWORD
             value: {{ .Values.postgresqlPassword | quote }}
+        - name: zabbix-agent
+          image: {{ .Values.zabbixAgent.image.repository }}:{{ .Values.zabbixAgent.image.tag }}
+          imagePullPolicy: {{ .Values.zabbix.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.zabbixAgent.resources | nindent 12 }}
+          env:
+          - name: ZBX_SERVER_HOST
+            value: 127.0.0.1
+          - name: ZBX_HOSTNAME
+            value: {{ .Release.Name }}-zabbix

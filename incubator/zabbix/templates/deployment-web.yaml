@@ -35,7 +35,7 @@ spec:
           image: {{ .Values.zabbixWeb.image.repository }}:{{ .Values.zabbixWeb.image.tag }}
           imagePullPolicy: {{ .Values.zabbixWeb.image.pullPolicy }}
           resources:
-            {{- toYaml .Values.zabbixWebResources | nindent 12 }}
+            {{- toYaml .Values.zabbixWeb.resources | nindent 12 }}
           ports:
             - name: postgres
               containerPort: 10051
