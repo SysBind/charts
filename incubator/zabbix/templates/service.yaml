@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-zabbix
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}-zabbix
+  ports:
+  - protocol: TCP
+    port: 10051
+    targetPort: 10051
+    name: zabbix

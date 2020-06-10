@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-zabbix-web
+  labels:
+    app.kubernetes.io/name:  {{ .Release.Name }}-zabbix-web
+    helm.sh/chart: {{ include "zabbix.chart" . }}
+    release: {{ .Release.Name | quote }}
+spec:
+  replicas: 1 # do not scale!
+  selector:
+    matchLabels:
+      app.kubernetes.io/name:  {{ .Release.Name }}-zabbix-web
+      release: {{ .Release.Name | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name:  {{ .Release.Name }}-zabbix-web
+        release: {{ .Release.Name | quote }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}      
+      containers:
+        - name: zabbix-web
+          image: {{ .Values.zabbixWeb.image.repository }}:{{ .Values.zabbixWeb.image.tag }}
+          imagePullPolicy: {{ .Values.zabbixWeb.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.zabbixWebResources | nindent 12 }}
+          ports:
+            - name: postgres
+              containerPort: 10051
+              protocol: TCP
+          env:
+          - name: DB_SERVER_HOST
+            value: {{ .Values.postgresqlHost | quote }}
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresqlUsername | quote }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.postgresqlPassword | quote }}
+          - name: ZBX_SERVER_HOST
+            value: {{ .Release.Name }}-zabbix

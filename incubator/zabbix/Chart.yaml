@@ -1,0 +1,16 @@
+apiVersion: v1
+name: zabbix
+version: 1.0.0
+appVersion: 5.0.1
+description: Chart for Zabbix - Real-time monitoring of IT components and services
+keywords:
+  - zabbix
+  - monitoring
+home: https://zabbix.com
+icon: https://assets.zabbix.com/img/logo/zabbix_logo_black_and_white.png
+sources:
+  - https://github.com/zabbix/zabbix
+  - https://github.com/zabbix/zabbix-docker
+maintainers:
+  - name: asafo
+    email: asaf@sysbind.co.il
