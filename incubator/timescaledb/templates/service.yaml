@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-timescaledb
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}-timescaledb
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
