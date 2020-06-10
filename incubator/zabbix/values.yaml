@@ -29,6 +29,9 @@ zabbixWeb:
     limits:
       memory: 1024Mi
       cpu: 1000m
+  ingress:
+    enabled: false
+    hostname: 
 
     
 zabbixAgent:
