@@ -39,7 +39,31 @@ spec:
           env:
             - name: PGPOOL_ADMIN_USERNAME
               value: {{ .Values.adminUsername | quote }}
-              
+            - name: PGPOOL_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "pgpool.fullname" . }}
+                  key: admin-password
+            - name: PGPOOL_HEALTH_CHECK_USER
+              value:  {{ .Values.healthCheckUsername | quote }}
+            - name: PGPOOL_HEALTH_CHECK_PASSWORD
+              value:  {{ .Values.healthCheckPassword | quote }}
+            - name: PGPOOL_SR_CHECK_USER
+              value: {{ .Values.healthCheckUsername | quote }}
+            - name: PGPOOL_SR_CHECK_PASSWORD              
+              value:  {{ .Values.healthCheckPassword | quote }}
+            - name: PGPOOL_ENABLE_POOL_HBA
+              value: "no"              
+            - name: PGPOOL_ENABLE_POOL_PASSWD
+              value: "no"              
+            - name: PGPOOL_BACKEND_NODES
+              value: {{ .Values.backends | quote }}
+            - name: PGPOOL_SR_CHECK_PERIOD
+              value: "0"
+            - name: PGPOOL_ENABLE_LOAD_BALANCING
+              value: "yes"
+            - name: PGPOOL_DISABLE_LOAD_BALANCE_ON_WRITE
+              value: "always"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

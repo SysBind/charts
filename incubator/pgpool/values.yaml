@@ -13,8 +13,17 @@ nameOverride: ""
 fullnameOverride: ""
 
 
+# pgpool admin username & password
 adminUsername: admin
-adminPassword: ""
+# adminPassword:
+
+# postgresql backends:
+#backends :"0:pg-0:5432,1:pg-1:5432"
+# or with weight for load balancing:
+# backends: "0:pg-0:5432:0.3,1:pg-1:5432:0.7"
+backends: "0:maas-main:5432:0,1:maas-main-repl:5432:1"
+healthCheckUsername: postgres
+healthCheckPassword: 05tHKoF2XxdsGEnO6XDJif94vCWeOE3tUiOETX05TsTp3llrYvqX43pvAxWaMXwz
 
 podSecurityContext: {}
   # fsGroup: 2000

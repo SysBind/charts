@@ -16,5 +16,5 @@ sources:
   - https://github.com/timescale/timescaledb
   - https://github.com/timescale/timescaledb-docker
 maintainers:
-  - name: asafo
+  - name: Asaf Ohayon
     email: asaf@sysbind.co.il
