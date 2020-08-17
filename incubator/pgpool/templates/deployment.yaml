@@ -44,6 +44,8 @@ spec:
                 secretKeyRef:
                   name: {{ template "pgpool.fullname" . }}
                   key: admin-password
+            - name: PGPOOL_HEALTH_CHECK_PERIOD
+              value: "0" # 0 means health check disabled, bitnami image will refuse to load without hc user and password still:
             - name: PGPOOL_HEALTH_CHECK_USER
               value:  {{ .Values.healthCheckUsername | quote }}
             - name: PGPOOL_HEALTH_CHECK_PASSWORD
