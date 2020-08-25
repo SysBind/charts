@@ -1,0 +1,19 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  labels:
+      team: {{ .Values.teamId  | quote }}
+  name: {{ printf "%s-%s"  .Values.teamId .Release.Name | quote }}
+spec:
+    numberOfInstances: {{ .Values.replicaCount }}
+    patroni:
+      {{- toYaml .Values.patroni | nindent 6 }}
+    postgresql:
+      {{- toYaml .Values.postgresql | nindent 6 }}
+    resources:
+      {{- toYaml .Values.resources | nindent 8 }}
+    teamId: {{ .Values.teamId | quote }}
+    users:
+      {{- toYaml .Values.users | nindent 6 }}
+    volume:
+      size: {{ .Values.volumeSize }}
