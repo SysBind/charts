@@ -1,0 +1,6 @@
+apiVersion: v2
+name: postgres-ha
+description: A Helm chart using Zalando's postgres-operator to deploy clusters
+type: application
+version: 0.1.0
+appVersion: 12.5
