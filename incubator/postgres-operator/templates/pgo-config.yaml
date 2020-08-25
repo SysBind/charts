@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pgo-config
-  namespace: {{ .Release.Namespace }}
-data:  
-  pgo.yaml: |-
-{{ .Files.Get "pgo.yaml" | indent 4 }}
-{{ (.Files.Glob "pgo-configs/**").AsConfig | indent 4 }}
