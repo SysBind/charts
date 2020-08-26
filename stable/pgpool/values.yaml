@@ -23,6 +23,15 @@ adminUsername: admin
 # backends: "0:pg-0:5432:0.3,1:pg-1:5432:0.7"
 # or with failover behavior:
   # backends: "0:pg-0:5432:0.3:.:DISALLOW_TO_FAILOVER,1:pg-1:5432:0.7:.:DISALLOW_TO_FAILOVER"
+healthCheckUsername:
+healthCheckPassword:
+
+# if healthCheckSecret is set, healthCheckPassword / healthCheckUsername above are ignored
+#healthCheckSecret:
+healthCheckSecretUsernameField: username
+healthCheckSecretPasswordField: password
+
+numInitChildren: 32
 
 podSecurityContext: {}
   # fsGroup: 2000

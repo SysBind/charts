@@ -46,10 +46,23 @@ spec:
                   key: admin-password
             - name: PGPOOL_HEALTH_CHECK_PERIOD
               value: "0" # 0 means health check disabled, bitnami image will refuse to load without hc user and password still:
+            {{ if not (empty .Values.healthCheckSecret) }}
+            - name: PGPOOL_HEALTH_CHECK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.healthCheckSecret }}
+                  key: {{ .Values.healthCheckSecretUsernameField }}
+            - name: PGPOOL_HEALTH_CHECK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.healthCheckSecret }}
+                  key: {{ .Values.healthCheckSecretPasswordField }}
+            {{ else }}
             - name: PGPOOL_HEALTH_CHECK_USER
               value:  {{ .Values.healthCheckUsername | quote }}
             - name: PGPOOL_HEALTH_CHECK_PASSWORD
               value:  {{ .Values.healthCheckPassword | quote }}
+            {{ end }}
             - name: PGPOOL_SR_CHECK_USER
               value: {{ .Values.healthCheckUsername | quote }}
             - name: PGPOOL_SR_CHECK_PASSWORD              
@@ -66,6 +79,8 @@ spec:
               value: "yes"
             - name: PGPOOL_DISABLE_LOAD_BALANCE_ON_WRITE
               value: "always"
+            - name: PGPOOL_NUM_INIT_CHILDREN
+              value: {{ .Values.numInitChildren | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
