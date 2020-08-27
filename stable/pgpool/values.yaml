@@ -44,6 +44,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+istio:
+  enabled: false
+
 service:
   type: ClusterIP
   port: 5432
