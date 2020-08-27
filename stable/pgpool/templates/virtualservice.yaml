@@ -7,13 +7,13 @@ metadata:
     {{- include "pgpool.labels" . | nindent 4 }}  
 spec:
   hosts:
-  - {{ include "pgpool.fullname" . }}.svc
+  - {{ include "pgpool.fullname" . }}.svc.{{ .Values.clusterName }}
   tcp:
   - match:
     - port: 5432
     route:
     - destination:
-        host: {{ include "pgpool.fullname" . }}.{{ .Release.Namespace }}.svc
+        host: {{ include "pgpool.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterName }}
         port:
           number: 5432
 {{- end }}

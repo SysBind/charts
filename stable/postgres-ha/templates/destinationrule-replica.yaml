@@ -6,5 +6,5 @@ metadata:
     {{- include "postgres-ha.labels" . | nindent 4 }}
   name: {{ printf "%s-%s"  .Values.teamId .Release.Name }}-repl
 spec:
-  host: {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}-repl.svc
+  host: {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}-repl.svc.{{ .Values.clusterName }}
 {{- end }}

@@ -7,13 +7,13 @@ metadata:
   name: {{ printf "%s-%s"  .Values.teamId .Release.Name }}
 spec:
   hosts:
-  - {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}.svc
+  - {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterName }}
   tcp:
   - match:
     - port: 5432
     route:
     - destination:
-        host: {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}.svc
+        host: {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterName }}
         port:
           number: 5432
 {{- end }}

@@ -24,6 +24,9 @@ autoscaling:
 
 istio:
   enabled: false
+
+clusterName: cluster.local
+  
 # See Zalando postgres-operator documentation regarding postgresql CRD:
 teamId: acid
 users: {}
