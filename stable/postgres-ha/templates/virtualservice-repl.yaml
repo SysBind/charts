@@ -1,0 +1,19 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    {{- include "postgres-ha.labels" . | nindent 4 }}
+  name:  {{ printf "%s-%s"  .Values.teamId .Release.Name }}-repl
+spec:
+  hosts:
+  - {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}-repl.svc
+  tcp:
+  - match:
+    - port: 5432
+    route:
+    - destination:
+        host: {{ printf "%s-%s"  .Values.teamId .Release.Name }}.{{ .Release.Namespace }}-repl.svc
+        port:
+          number: 5432
+{{- end }}

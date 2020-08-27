@@ -22,6 +22,8 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 
+istio:
+  enabled: false
 # See Zalando postgres-operator documentation regarding postgresql CRD:
 teamId: acid
 users: {}
@@ -39,3 +41,9 @@ postgresql:
 #  parameters:
 #    log_statement: all
   
+
+# Logical Backups:
+backup:
+  enabled: false
+  gcsBucket:
+  gcsSvcTokenSecret:
