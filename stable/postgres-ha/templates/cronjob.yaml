@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "postgres-ha.labels" . | nindent 4 }}  
 spec:
-  schedule: {{ .Values.backup.schedule }}
+  schedule: {{ .Values.backup.schedule | quote }}
   jobTemplate:
     spec:
       template:
@@ -16,7 +16,7 @@ spec:
             image: sysbind/pg-logical-backup:latest
             env:
               - name: PG_VERSION
-                value: {{ .Values.postgresql.version }}
+                value: {{ .Values.postgresql.version | quote }}
               - name: PGHOST
                 value:  {{ printf "%s-%s"  .Values.teamId .Release.Name }}-repl
               - name: PGUSER
@@ -31,7 +31,7 @@ spec:
                     key: password                    
               {{ if not (empty .Values.backup.gcsBucket) }}
               - name: GCS_BUCKET
-                value: {{ .Values.backup.gcsBucket }}
+                value: {{ .Values.backup.gcsBucket | quote }}
               - name: GCS_KEYFILE
                 value: "/var/run/secrets/gcs/{{ .Values.backup.gcsSvcTokenFileName }}"
               {{ else }}
@@ -51,7 +51,7 @@ spec:
           volumes:
             - name: gcskey
               secret:
-                secretName: {{ .Values.gcsSvcTokenSecret | quote }}
+                secretName: {{ .Values.backup.gcsSvcTokenSecret | quote }}
           {{ end }}
           restartPolicy: Never
 {{- end }}
