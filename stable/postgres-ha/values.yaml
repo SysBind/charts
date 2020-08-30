@@ -48,5 +48,10 @@ postgresql:
 # Logical Backups:
 backup:
   enabled: false
+  schedule: "0 0 * * *"
   gcsBucket:
   gcsSvcTokenSecret:
+  gcsSvcTokenFileName: "gcskey.json"
+  azureStorageAccount:
+  azureStorageKey:
+  azureStorageContainer:

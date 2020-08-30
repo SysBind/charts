@@ -1,0 +1,57 @@
+{{- if .Values.backup.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "postgres-ha.fullname" . }}
+  labels:
+    {{- include "postgres-ha.labels" . | nindent 4 }}  
+spec:
+  schedule: {{ .Values.backup.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: sysbind/pg-logical-backup:latest
+            env:
+              - name: PG_VERSION
+                value: {{ .Values.postgresql.version }}
+              - name: PGHOST
+                value:  {{ printf "%s-%s"  .Values.teamId .Release.Name }}-repl
+              - name: PGUSER
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres.{{ printf "%s-%s"  .Values.teamId .Release.Name }}.credentials.postgresql.acid.zalan.do
+                    key: username
+              - name: PGPASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres.{{ printf "%s-%s"  .Values.teamId .Release.Name }}.credentials.postgresql.acid.zalan.do
+                    key: password                    
+              {{ if not (empty .Values.backup.gcsBucket) }}
+              - name: GCS_BUCKET
+                value: {{ .Values.backup.gcsBucket }}
+              - name: GCS_KEYFILE
+                value: "/var/run/secrets/gcs/{{ .Values.backup.gcsSvcTokenFileName }}"
+              {{ else }}
+              - name: AZURE_STORAGE_ACCOUNT
+                value: {{ .Values.backup.azureStorageAccount }}
+              - name: AZURE_STORAGE_KEY                
+                value: {{ .Values.backup.azureStorageKey }}
+              - name: AZURE_CONTAINER_NAME
+                value: {{ .Values.backup.azureStorageContainer }}
+              {{ end }}
+            {{ if not (empty .Values.backup.gcsBucket) }}
+            volumeMounts:
+              - name: gcskey
+                mountPath: "/var/run/secrets/gcs"
+            {{ end }}
+          {{ if not (empty .Values.backup.gcsBucket) }}            
+          volumes:
+            - name: gcskey
+              secret:
+                secretName: {{ .Values.gcsSvcTokenSecret | quote }}
+          {{ end }}
+          restartPolicy: Never
+{{- end }}
