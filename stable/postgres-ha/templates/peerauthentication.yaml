@@ -1,0 +1,16 @@
+{{- if .Values.istio.enabled }}
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  labels:
+     {{- include "postgres-ha.labels" . | nindent 4 }}
+  name: {{ printf "%s-%s"  .Values.teamId .Release.Name }}
+spec:
+  selector:
+    matchLabels:      
+      cluster-name: {{ printf "%s-%s"  .Values.teamId .Release.Name | quote }}
+  portLevelMtls:
+    5432:
+      mode: DISABLE        
+{{- end }}

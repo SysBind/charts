@@ -57,16 +57,26 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.healthCheckSecret }}
                   key: {{ .Values.healthCheckSecretPasswordField }}
+            - name: PGPOOL_SR_CHECK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.healthCheckSecret }}
+                  key: {{ .Values.healthCheckSecretUsernameField }}
+            - name: PGPOOL_SR_CHECK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.healthCheckSecret }}
+                  key: {{ .Values.healthCheckSecretPasswordField }}
             {{ else }}
             - name: PGPOOL_HEALTH_CHECK_USER
               value:  {{ .Values.healthCheckUsername | quote }}
             - name: PGPOOL_HEALTH_CHECK_PASSWORD
               value:  {{ .Values.healthCheckPassword | quote }}
-            {{ end }}
             - name: PGPOOL_SR_CHECK_USER
               value: {{ .Values.healthCheckUsername | quote }}
             - name: PGPOOL_SR_CHECK_PASSWORD              
-              value:  {{ .Values.healthCheckPassword | quote }}
+              value:  {{ .Values.healthCheckPassword | quote }}              
+            {{ end }}
             - name: PGPOOL_ENABLE_POOL_HBA
               value: "no"              
             - name: PGPOOL_ENABLE_POOL_PASSWD

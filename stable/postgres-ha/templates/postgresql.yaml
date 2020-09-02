@@ -3,6 +3,11 @@ kind: postgresql
 metadata:
   labels:
       team: {{ .Values.teamId  | quote }}
+      app: {{ printf "spilo-%s-%s"  .Values.teamId .Release.Name | quote }}
+  annotations:
+    {{- if .Values.operatorId }}
+    "acid.zalan.do/controller":  {{ .Values.operatorId  | quote }}
+    {{- end }}
   name: {{ printf "%s-%s"  .Values.teamId .Release.Name | quote }}
 spec:
     numberOfInstances: {{ .Values.replicaCount }}

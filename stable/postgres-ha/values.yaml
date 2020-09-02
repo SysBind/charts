@@ -26,7 +26,10 @@ istio:
   enabled: false
 
 clusterName: cluster.local
-  
+
+# give ownership to specific postgres-operator (controllerId):
+#operatorId:
+
 # See Zalando postgres-operator documentation regarding postgresql CRD:
 teamId: acid
 users: {}
@@ -35,8 +38,9 @@ users: {}
 #    - createdb
 
 patroni:
-  pg_hba:
+  pg_hba:  
   - host  all all 0.0.0.0/0 md5
+  - hostnossl replication standby all md5 # important for Istio's mTLS
 
 
 postgresql:
