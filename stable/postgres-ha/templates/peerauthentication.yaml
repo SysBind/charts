@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:      
       cluster-name: {{ printf "%s-%s"  .Values.teamId .Release.Name | quote }}
-  portLevelMtls:
-    5432:
-      mode: DISABLE        
+      application: spilo
+  mtls:
+    mode: DISABLE        
 {{- end }}
