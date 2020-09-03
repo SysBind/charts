@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "postgres-ha.fullname" . }}
+  name: {{ printf "backup-%s-%s"  .Values.teamId .Release.Name }}
   labels:
     {{- include "postgres-ha.labels" . | nindent 4 }}  
 spec:
