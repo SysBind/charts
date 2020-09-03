@@ -28,7 +28,11 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: postgres.{{ printf "%s-%s"  .Values.teamId .Release.Name }}.credentials.postgresql.acid.zalan.do
-                    key: password                    
+                    key: password
+              {{ if .Values.istio.enabled }}
+              - name: ENVOY_SIGNAL_SHUTDOWN
+                value: "true"
+              {{ end }}
               {{ if not (empty .Values.backup.gcsBucket) }}
               - name: GCS_BUCKET
                 value: {{ .Values.backup.gcsBucket | quote }}
