@@ -59,3 +59,9 @@ backup:
   azureStorageAccount:
   azureStorageKey:
   azureStorageContainer:
+
+# Bootstrap from existing logical backups:
+# (gcs/azure settings taken from above 'backup' section)
+restore:
+  enabled: false
+  
