@@ -1,19 +1,18 @@
 {{- if .Values.restore.enabled }}
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ printf "restore-%s-%s"  .Values.teamId .Release.Name }}
   labels:
-    {{- include "postgres-ha.labels" . | nindent 4 }}  
+    {{- include "postgres-ha.labels" . | nindent 4 }}
 spec:
-  spec:
     template:
       spec:
         containers:
         - name: restore
-            image: sysbind/pg-logical-backup:latest
-            command: ["/restore.sh"]
-            env:
+          image: sysbind/pg-logical-backup:latest
+          command: ["/restore.sh"]
+          env:
               - name: PG_VERSION
                 value: {{ .Values.postgresql.version | quote }}
               - name: PGHOST
@@ -51,10 +50,10 @@ spec:
                 mountPath: "/var/run/secrets/gcs"
             {{ end }}
           {{ if not (empty .Values.backup.gcsBucket) }}            
-          volumes:
+        volumes:
             - name: gcskey
               secret:
                 secretName: {{ .Values.backup.gcsSvcTokenSecret | quote }}
           {{ end }}
-          restartPolicy: Never
+        restartPolicy: Never
 {{- end }}

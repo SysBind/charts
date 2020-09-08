@@ -61,7 +61,9 @@ backup:
   azureStorageContainer:
 
 # Bootstrap from existing logical backups:
-# (gcs/azure settings taken from above 'backup' section)
+# - gcs/azure settings taken from above 'backup' section
+# - original owners should already exist, use above 'users' section
+#   (otherwsie databases restored will be owned by the superuser (e.g: postgres)
 restore:
   enabled: false
   
